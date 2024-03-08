@@ -23,7 +23,7 @@ CHECKPOINT_MODELS=(
     )
 
 LORA_MODELS=(
-    "https://huggingface.co/aadinash/lora7/resolve/main/VIBRANTWAVYSWEATER-000006.safetensors"
+    "https://huggingface.co/aadinash/lora/resolve/main/VIBRANTWAVYSWEATER-000006.safetensors"
 )
 
 VAE_MODELS=(
@@ -40,7 +40,7 @@ IPADAPTER_MODELS=(
     "https://huggingface.co/h94/IP-Adapter/resolve/main/sdxl_models/ip-adapter_sdxl_vit-h.safetensors"
 )
 
-CLIP_MODELS=(
+CLIPVISION_MODELS=(
     "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors"
 )
 
@@ -49,6 +49,11 @@ FACERESTORE_MODELS=(
     "https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.4.pth"
     "https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/codeformer-v0.1.0.pth"
 )
+
+SWAP_MODELS=(
+"https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/inswapper_128.onnx"
+)
+
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
 
 function build_extra_start() {
@@ -73,11 +78,14 @@ function build_extra_start() {
         "/opt/storage/stable_diffusion/models/ipadapter" \
         "${IPADAPTER_MODELS[@]}"
     build_extra_get_models \
-        "/opt/storage/stable_diffusion/models/clip" \
-        "${CLIP_MODELS[@]}"
+        "/opt/storage/stable_diffusion/models/clip_vision" \
+        "${CLIPVISION_MODELS[@]}"
     build_extra_get_models \
         "/opt/storage/stable_diffusion/models/facerestore" \
         "${FACERESTORE_MODELS[@]}"
+    build_extra_get_models \
+        "/opt/storage/stable_diffusion/models/insightface" \
+        "${SWAP_MODELS[@]}"
      
     cd /opt/ComfyUI && \
     micromamba run -n comfyui -e LD_PRELOAD=libtcmalloc.so python main.py \
